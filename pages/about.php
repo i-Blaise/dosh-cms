@@ -42,13 +42,59 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
 
   <!-- Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+      <!-- WYSIWYG Editor  -->
+      <script src="../vendor/tinymce/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>
+    // tinymce.init({
+    //   selector: 'textarea#default-editor',
+    //   plugins: 'code'
+    // });
+
+    tinymce.init({
+      selector: 'textarea#default-editor',
+      plugins: 'advlist autolink lists link image charmap preview anchor pagebreak code visualchars wordcount',
+	  setup: function(editor) {
+	  	var max = 400;
+	    editor.on('submit', function(event) {
+		  var numChars = tinymce.activeEditor.plugins.wordcount.body.getCharacterCount();
+		  if (numChars > max) {
+            alert("Only a maximum " + max + " characters are allowed.");
+			event.preventDefault();
+			return false;
+		  }
+		});
+	  }
+   });
+
+
+   tinymce.init({
+      selector: 'textarea#aboutus-editor',
+      plugins: 'advlist autolink lists link image charmap preview anchor pagebreak code visualchars wordcount',
+	  setup: function(editor) {
+	  	var max = 500;
+	    editor.on('submit', function(event) {
+		  var numChars = tinymce.activeEditor.plugins.wordcount.body.getCharacterCount();
+		  if (numChars > max) {
+            alert("Only a maximum " + max + " characters are allowed.");
+			event.preventDefault();
+			return false;
+		  }
+		});
+	  }
+   });
+  </script>
+
+
 </head>
 
 
 <?php
-  if(isset($_POST['about_img_submit']))
+  if(isset($_POST['submit']))
   {
-    $uploadStatus = $mainPlug->uploadAboutImgHeader($_POST);
+    $uploadStatus = $mainPlug->uploadAboutUsPage($_POST);
+    // echo $uploadStatus;
+    // die();
     if($uploadStatus == 'good')
     { 
         echo "     <script type='text/javascript'>   
@@ -93,76 +139,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
         toastr.error('Dimensions can be between 800x500 and 1920x1080', 'Invalid File');
     });
     </script>";
-    }
-}elseif(isset($_POST['about1_submit']))
-{
-  $uploadStatus = $mainPlug->uploadAboutSections($_POST);
-  if($uploadStatus == 'good')
-  { 
-      echo "     <script type='text/javascript'>   
-      $(document).ready(function() {
-      toastr.options.positionClass = 'toast-top-center';
-      toastr.options.closeButton = true;
-      toastr.options.progressBar = true;
-      toastr.options.timeOut = 30000;
-      toastr.success('About Us Page Updated', 'Success');
-  });
-  </script>";
-  }else{ 
-      echo "     <script type='text/javascript'>   
-      $(document).ready(function() {
-      toastr.options.positionClass = 'toast-top-center';
-      toastr.options.closeButton = true;
-      toastr.options.progressBar = true;
-      toastr.options.timeOut = 30000;
-      toastr.error('Contact Technical Team for Assistance', 'Somethings Wrong');
-  });
-  </script>";
-  }
-}elseif(isset($_POST['about2_submit']))
-{
-  $uploadStatus = $mainPlug->uploadAboutSections($_POST);
-  if($uploadStatus == 'good')
-  { 
-      echo "     <script type='text/javascript'>   
-      $(document).ready(function() {
-      toastr.options.positionClass = 'toast-top-center';
-      toastr.options.closeButton = true;
-      toastr.options.progressBar = true;
-      toastr.options.timeOut = 30000;
-      toastr.success('About Us Page Updated', 'Success');
-  });
-  </script>";
-  }else{ 
-      echo "     <script type='text/javascript'>   
-      $(document).ready(function() {
-      toastr.options.positionClass = 'toast-top-center';
-      toastr.options.closeButton = true;
-      toastr.options.progressBar = true;
-      toastr.options.timeOut = 30000;
-      toastr.error('Contact Technical Team for Assistance', 'Somethings Wrong');
-  });
-  </script>";
-  }
-}elseif(isset($_POST['about3_submit']))
-{
-  // print_r($_POST);
-  // die();
-  $uploadStatus = $mainPlug->uploadAboutSections($_POST);
-  // print_r($uploadStatus);
-  // die();
-  if($uploadStatus == 'good')
-  { 
-      echo "     <script type='text/javascript'>   
-      $(document).ready(function() {
-      toastr.options.positionClass = 'toast-top-center';
-      toastr.options.closeButton = true;
-      toastr.options.progressBar = true;
-      toastr.options.timeOut = 30000;
-      toastr.success('About Us Page Updated', 'Success');
-  });
-  </script>";
-  }else{ 
+    }else{ 
       echo "     <script type='text/javascript'>   
       $(document).ready(function() {
       toastr.options.positionClass = 'toast-top-center';
@@ -226,54 +203,9 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:../partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <div class="user-profile">
-          <div class="user-image">
-            <img src="../images/faces/person.png">
-          </div>
-          <div class="user-name">
-            Dosh Website CMS
-          </div>
-          <div class="user-designation">
-              Admin
-          </div>
-        </div>
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link disabled" href="../index.html">
-              <i class="icon-bar-graph-2 menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-              <i class="icon-layout menu-icon"></i>
-              <span class="menu-title">Pages</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-basic">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="../pages/homepage.php">Homepage</a></li>
-                <li class="nav-item"> <a class="nav-link" href="../pages/about.php" aria-disabled="true">About Page</a></li>
-                <li class="nav-item"> <a class="nav-link" href="../pages/product_services.php">Products & Services</a></li>
-                <li class="nav-item"> <a class="nav-link" href="../pages/contact.php">Contact Page</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../pages/footer.php">
-              <i class="icon-layout menu-icon"></i>
-              <span class="menu-title">Footer</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../pages/preview.html">
-              <i class="icon-paper menu-icon"></i>
-              <span class="menu-title">Website Preview</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <?php
+    include_once('sidebar.php');
+      ?>
       <!-- partial -->
 
       <?php
@@ -287,7 +219,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">About Page</h4>
+                  <h4 class="card-title">About Page Header Image</h4>
                   <p class="card-description">
                     About Image Header
                   </p>
@@ -295,8 +227,8 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                   <div class="row">
                   <div class="responsive">
                     <div class="gallery">
-                      <a target="_blank" href="<?php echo $aboutus_data['about_header_image']; ?>">
-                        <img src="<?php echo $aboutus_data['about_header_image']; ?>" alt="Cinque Terre" width="600" height="400">
+                      <a target="_blank" href="<?php echo $aboutus_data['header_image']; ?>">
+                        <img src="<?php echo $aboutus_data['header_image']; ?>" alt="Cinque Terre" width="600" height="400">
                       </a>
                       <div class="desc">About Image Header</div>
                     </div>
@@ -307,20 +239,48 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                     <div class="form-group">
                     <div class="mb-3">
                       <label for="formFile" class="form-label">About Us Header Image</label>
-                      <input class="form-control" type="file" id="formFile" name="about_header_image">
+                      <input class="form-control" type="file" id="formFile" name="header_image">
                       </div>
                       <p style="color:red">Image should be above 800 x 500 and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
                       <p style="color:red">Image extesion can be SVG, PNG, JPG or JPEG</p>
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" name="about_img_submit">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="header_image_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
             </div>
 
 
+
+
+
+
+            <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Main Description</h4>
+                  <!-- <p class="card-description">
+                    What We Do
+                  </p> -->
+                  <form class="forms-sample" method="POST" action="">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Title</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="main_title" value="<?php echo $aboutus_data['main_title']; ?>" maxlength="25">
+                      <p style="color:red">Max number of characters: 25</p>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleTextarea1">Description</label>
+                      <textarea class="form-control" id="default-editor" rows="4" name="main_desc" maxlength="800"><?php echo $aboutus_data['main_desc']; ?></textarea>
+                      <p style="color:red">Max number of characters: 400</p>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="main_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
+                  </form>
+                </div>
+              </div>
+            </div>
 
 
 
@@ -330,53 +290,53 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                 <div class="card-body">
                   <h4 class="card-title">About Us 1</h4>
                   <!-- <p class="card-description">
-                    What We Do
+                    Mission Statement
                   </p> -->
                   <form class="forms-sample" method="POST" action="">
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Title 1</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="about1_heading" value="<?php echo $aboutus_data['about1_heading']; ?>" maxlength="25">
+                      <label for="exampleInputEmail1">Title</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="about1_title" value="<?php echo $aboutus_data['about1_title']; ?>" maxlength="25">
                       <p style="color:red">Max number of characters: 25</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleTextarea1">Description 1</label>
-                      <textarea class="form-control" id="exampleTextarea1" rows="4" name="about1_desc" maxlength="800"><?php echo $aboutus_data['about1_desc']; ?></textarea>
-                      <p style="color:red">Max number of characters: 800</p>
+                      <label for="exampleTextarea1">Description</label>
+                      <textarea class="form-control" id="aboutus-editor" rows="4" name="about1_desc" maxlength="255"><?php echo $aboutus_data['about1_desc']; ?></textarea>
+                      <p style="color:red">Max number of characters: 255</p>
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" name="about1_submit">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="about1_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
             </div>
-
-
 
 
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">About</h4>
+                  <h4 class="card-title">About Us 2</h4>
                   <!-- <p class="card-description">
-                    Mission Statement
+                    What We Do
                   </p> -->
                   <form class="forms-sample" method="POST" action="">
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Title 2</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="about2_heading" value="<?php echo $aboutus_data['about2_heading']; ?>" maxlength="25">
+                      <label for="exampleInputEmail1">Title</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="about2_title" value="<?php echo $aboutus_data['about2_title']; ?>" maxlength="25">
                       <p style="color:red">Max number of characters: 25</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleTextarea1">Description 2</label>
-                      <textarea class="form-control" id="exampleTextarea1" rows="4" name="about2_desc" maxlength="255"><?php echo $aboutus_data['about2_desc']; ?></textarea>
+                      <label for="exampleTextarea1">Description</label>
+                      <textarea class="form-control" id="aboutus-editor" rows="4" name="about2_desc" maxlength="255"><?php echo $aboutus_data['about2_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 255</p>
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" name="about2_submit">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="about2_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
             </div>
+
+
 
 
             <div class="col-md-6 grid-margin stretch-card">
@@ -388,17 +348,47 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                   </p> -->
                   <form class="forms-sample" method="POST" action="">
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Title 3</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="about3_heading" value="<?php echo $aboutus_data['about3_heading']; ?>" maxlength="25">
+                      <label for="exampleInputEmail1">Title</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="about3_title" value="<?php echo $aboutus_data['about3_title']; ?>" maxlength="25">
                       <p style="color:red">Max number of characters: 25</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleTextarea1">Description 3</label>
-                      <textarea class="form-control" id="exampleTextarea1" rows="4" name="about3_desc" maxlength="255"><?php echo $aboutus_data['about3_desc']; ?></textarea>
+                      <label for="exampleTextarea1">Description</label>
+                      <textarea class="form-control" id="aboutus-editor" rows="4" name="about3_desc" maxlength="255"><?php echo $aboutus_data['about3_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 255</p>
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" name="about3_submit">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="about3_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+            <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">About Us 4</h4>
+                  <!-- <p class="card-description">
+                    What We Do
+                  </p> -->
+                  <form class="forms-sample" method="POST" action="">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Title</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="about4_title" value="<?php echo $aboutus_data['about4_title']; ?>" maxlength="25">
+                      <p style="color:red">Max number of characters: 25</p>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleTextarea1">Description</label>
+                      <textarea class="form-control" id="aboutus-editor" rows="4" name="about4_desc" maxlength="255"><?php echo $aboutus_data['about4_desc']; ?></textarea>
+                      <p style="color:red">Max number of characters: 255</p>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="about4_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>

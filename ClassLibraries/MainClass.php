@@ -1008,19 +1008,85 @@ class mainClass extends DataBase{
         }
 
 
-        function uploadAboutSections($data)
+        function uploadAboutUsPage($data)
         {
             if(is_object($data) || is_array($data))
             {
 
-                if(isset($_POST['about1_submit']))
+                if(isset($_POST['submit']) && $_POST['submit'] == 'header_image_upload')
                 {
+                    if(!empty(basename($_FILES["header_image"]["name"])))
+                    {
+                        $name = $_FILES["header_image"]["name"];
+                        $type = $_FILES["header_image"]["type"];
+                        $size = $_FILES["header_image"]["size"];
+                        $error = $_FILES["header_image"]["error"];
+                        $tmp_name = $_FILES["header_image"]["tmp_name"];
+                        $arr = getimagesize($_FILES["header_image"]["tmp_name"]);
+            
+                        $image_width = $arr[0];
+                        $image_height = $arr[1];
+                        $header_img_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+                        if($header_img_link == 'ext_err')
+                        {
+                            return $header_img_link;
+                        }elseif($header_img_link == 'file_err')
+                        {
+                            return $header_img_link;
+                        }elseif($header_img_link == 'dimension_err')
+                        {
+                            return $header_img_link;
+                        }
+                    }else{
+                        return 'empty image file';
+                    }
+                    
+                    if(isset($header_img_link))
+                    {
+                        $myQuery = "UPDATE aboutus SET 
+                        header_image = '$header_img_link'
+                        WHERE id = 1";
+            
+                        
+                        $result = mysqli_query($this->db, $myQuery);
+                        if(!$result){
+                        return "Error: " .mysqli_error($this->db);
+                        }else{
+                            return 'good';
+                        }
+                    }
+
+
+                }elseif(isset($_POST['submit']) && $_POST['submit'] == 'main_upload')
+                {
+
+                    $main_title = filter_var($data['main_title'], FILTER_SANITIZE_STRING);
+                    $main_desc = $data['main_desc'];
+                    
+                    $myQuery = "UPDATE aboutus SET 
+                    main_title = '$main_title',
+                    main_desc = '$main_desc'
+                    WHERE id = 1";
+          
+                    
+                    $result = mysqli_query($this->db, $myQuery);
+                    if(!$result){
+                    return "Error: " .mysqli_error($this->db);
+                    }else{
+                    return 'good';
+                    }
+
+
+
+                }elseif(isset($_POST['submit']) && $_POST['submit'] == 'about1_upload')
+                {
+
       
-                $about1_heading = filter_var($data['about1_heading'], FILTER_SANITIZE_STRING);
-                $about1_desc = filter_var($data['about1_desc'], FILTER_SANITIZE_STRING);
+                $about1_title = filter_var($data['about1_title'], FILTER_SANITIZE_STRING);
+                $about1_desc = $data['about1_desc'];
                 
                 $myQuery = "UPDATE aboutus SET 
-                about1_heading = '$about1_heading',
+                about1_title = '$about1_title',
                 about1_desc = '$about1_desc'
                 WHERE id = 1";
       
@@ -1032,13 +1098,13 @@ class mainClass extends DataBase{
                 return 'good';
                 }
 
-                }elseif(isset($_POST['about2_submit']))
+                }elseif(isset($_POST['submit']) && $_POST['submit'] == 'about2_upload')
                 {
-                    $about2_heading = filter_var($data['about2_heading'], FILTER_SANITIZE_STRING);
+                    $about2_title = filter_var($data['about2_title'], FILTER_SANITIZE_STRING);
                     $about2_desc = filter_var($data['about2_desc'], FILTER_SANITIZE_STRING);
                     
                     $myQuery = "UPDATE aboutus SET 
-                    about2_heading = '$about2_heading',
+                    about2_title = '$about2_title',
                     about2_desc = '$about2_desc'
                     WHERE id = 1";
           
@@ -1049,14 +1115,32 @@ class mainClass extends DataBase{
                     }else{
                     return 'good';
                     }
-                }elseif(isset($_POST['about3_submit']))
+
+                }elseif(isset($_POST['submit']) && $_POST['submit'] == 'about3_upload')
                 {
-                    $about3_heading = filter_var($data['about3_heading'], FILTER_SANITIZE_STRING);
-                    $about3_desc = filter_var($data['about3_desc'], FILTER_SANITIZE_STRING);
+                    $about3_title = filter_var($data['about3_title'], FILTER_SANITIZE_STRING);
+                    $about3_desc = $data['about3_desc'];
                     
                     $myQuery = "UPDATE aboutus SET 
-                    about3_heading = '$about3_heading',
+                    about3_title = '$about3_title',
                     about3_desc = '$about3_desc'
+                    WHERE id = 1";
+        
+                    
+                    $result = mysqli_query($this->db, $myQuery);
+                    if(!$result){
+                    return "Error: " .mysqli_error($this->db);
+                    }else{
+                    return 'good';
+                    }
+                }elseif(isset($_POST['submit']) && $_POST['submit'] == 'about4_upload')
+                {
+                    $about4_title = filter_var($data['about4_title'], FILTER_SANITIZE_STRING);
+                    $about4_desc = $data['about4_desc'];
+                    
+                    $myQuery = "UPDATE aboutus SET 
+                    about4_title = '$about4_title',
+                    about4_desc = '$about4_desc'
                     WHERE id = 1";
         
                     
@@ -1145,7 +1229,356 @@ class mainClass extends DataBase{
     }
 
 
+
+
+
     function uploadPnSPage($data)
+    {
+        if(is_object($data) || is_array($data))
+        {
+            if(isset($_POST['submit']) && $_POST['submit'] == 'main_upload')
+            {
+                $main_title = filter_var($data['main_title'], FILTER_SANITIZE_STRING);
+                $main_desc = filter_var($data['main_desc'], FILTER_SANITIZE_STRING);
+                
+                $myQuery = "UPDATE products_and_services SET 
+                main_title = '$main_title',
+                main_desc = '$main_desc'
+                WHERE id = 1";
+
+            }elseif(isset($_POST['submit']) && $_POST['submit'] == 'banner_upload')
+            {
+                if(isset($_FILES["banner_image"]["size"]))
+                {
+                $name = $_FILES["banner_image"]["name"];
+                $type = $_FILES["banner_image"]["type"];
+                $size = $_FILES["banner_image"]["size"];
+                $error = $_FILES["banner_image"]["error"];
+                $tmp_name = $_FILES["banner_image"]["tmp_name"];
+                $arr = getimagesize($_FILES["banner_image"]["tmp_name"]);
+    
+                $image_width = $arr[0];
+                $image_height = $arr[1];
+                $banner_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+                if($banner_image_link == 'ext_err')
+                {
+                    return $banner_image_link;
+                }elseif($banner_image_link == 'file_err')
+                {
+                    return $banner_image_link;
+                }elseif($banner_image_link == 'dimension_err')
+                {
+                    return $banner_image_link;
+                }else{
+                    $myQuery = "UPDATE products_and_services SET 
+                    banner_image = '$banner_image_link'
+                    WHERE id = 1";
+        
+                    
+                    $result = mysqli_query($this->db, $myQuery);
+                    if(!$result){
+                    return "Error: " .mysqli_error($this->db);
+                    }else{
+                        return 'good';
+                    }
+                }
+                }
+    
+            }elseif(isset($_POST['submit']) && $_POST['submit'] == 'insuance_upload')
+            {
+
+                if(!empty(basename($_FILES["insurance_image"]["name"])))
+                {
+                $name = $_FILES["insurance_image"]["name"];
+                $type = $_FILES["insurance_image"]["type"];
+                $size = $_FILES["insurance_image"]["size"];
+                $error = $_FILES["insurance_image"]["error"];
+                $tmp_name = $_FILES["insurance_image"]["tmp_name"];
+                $arr = getimagesize($_FILES["insurance_image"]["tmp_name"]);
+    
+                $image_width = $arr[0];
+                $image_height = $arr[1];
+                $insurance_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+                if($insurance_image_link == 'ext_err')
+                {
+                    return $insurance_image_link;
+                }elseif($insurance_image_link == 'file_err')
+                {
+                    return $insurance_image_link;
+                }elseif($insurance_image_link == 'dimension_err')
+                {
+                    return $insurance_image_link;
+                }else{
+                    $myQuery = "UPDATE products_and_services SET 
+                    insurance_image = '$insurance_image_link'
+                    WHERE id = 1";
+
+                    $result = mysqli_query($this->db, $myQuery);
+                    if(!$result){
+                    return "Error: " .mysqli_error($this->db);
+                    }
+                     }
+                }
+
+                
+
+                $insurance_ex = $data['insurance_ex'];
+                $insurance_desc = $data['insurance_desc'];
+
+                    $query = "UPDATE products_and_services SET 
+                    insurance_ex = '$insurance_ex',
+                    insurance_desc = '$insurance_desc'
+                    WHERE id = 1";
+                    
+                    $query_result = mysqli_query($this->db, $query);
+                    if(!$query_result){
+                    return "Error: " .mysqli_error($this->db);
+                    }else{
+                    return 'good';
+                    }
+
+                
+
+            }elseif(isset($_POST['submit']) && $_POST['submit'] == 'finance_upload')
+            {
+
+                if(!empty(basename($_FILES["finance_image"]["name"])))
+                {
+                $name = $_FILES["finance_image"]["name"];
+                $type = $_FILES["finance_image"]["type"];
+                $size = $_FILES["finance_image"]["size"];
+                $error = $_FILES["finance_image"]["error"];
+                $tmp_name = $_FILES["finance_image"]["tmp_name"];
+                $arr = getimagesize($_FILES["finance_image"]["tmp_name"]);
+    
+                $image_width = $arr[0];
+                $image_height = $arr[1];
+                $finance_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+                if($finance_image_link == 'ext_err')
+                {
+                    return $finance_image_link;
+                }elseif($finance_image_link == 'file_err')
+                {
+                    return $finance_image_link;
+                }elseif($finance_image_link == 'dimension_err')
+                {
+                    return $finance_image_link;
+                }else{
+                    $myQuery = "UPDATE products_and_services SET 
+                    finance_image = '$finance_image_link'
+                    WHERE id = 1";
+
+                    $result = mysqli_query($this->db, $myQuery);
+                    if(!$result){
+                    return "Error: " .mysqli_error($this->db);
+                    }
+                     }
+                }
+
+                
+
+                $finance_ex = $data['finance_ex'];
+                $finance_desc = $data['finance_desc'];
+
+                    $query = "UPDATE products_and_services SET 
+                    finance_ex = '$finance_ex',
+                    finance_desc = '$finance_desc'
+                    WHERE id = 1";
+                    
+                    $query_result = mysqli_query($this->db, $query);
+                    if(!$query_result){
+                    return "Error: " .mysqli_error($this->db);
+                    }else{
+                    return 'good';
+                    }
+
+                
+
+            }elseif(isset($_POST['submit']) && $_POST['submit'] == 'ride_upload')
+            {
+
+                if(!empty(basename($_FILES["ride_image"]["name"])))
+                {
+                $name = $_FILES["ride_image"]["name"];
+                $type = $_FILES["ride_image"]["type"];
+                $size = $_FILES["ride_image"]["size"];
+                $error = $_FILES["ride_image"]["error"];
+                $tmp_name = $_FILES["ride_image"]["tmp_name"];
+                $arr = getimagesize($_FILES["ride_image"]["tmp_name"]);
+    
+                $image_width = $arr[0];
+                $image_height = $arr[1];
+                $ride_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+                if($ride_image_link == 'ext_err')
+                {
+                    return $ride_image_link;
+                }elseif($ride_image_link == 'file_err')
+                {
+                    return $ride_image_link;
+                }elseif($ride_image_link == 'dimension_err')
+                {
+                    return $ride_image_link;
+                }else{
+                    $myQuery = "UPDATE products_and_services SET 
+                    ride_image = '$ride_image_link'
+                    WHERE id = 1";
+
+                    $result = mysqli_query($this->db, $myQuery);
+                    if(!$result){
+                    return "Error: " .mysqli_error($this->db);
+                    }
+                     }
+                }
+
+                
+
+                $ride_ex = $data['ride_ex'];
+                $ride_desc = $data['ride_desc'];
+
+                    $query = "UPDATE products_and_services SET 
+                    ride_ex = '$ride_ex',
+                    ride_desc = '$ride_desc'
+                    WHERE id = 1";
+                    
+                    $query_result = mysqli_query($this->db, $query);
+                    if(!$query_result){
+                    return "Error: " .mysqli_error($this->db);
+                    }else{
+                    return 'good';
+                    }
+
+                
+
+            }elseif(isset($_POST['submit']) && $_POST['submit'] == 'ecom_upload')
+            {
+
+                if(!empty(basename($_FILES["ecom_image"]["name"])))
+                {
+                $name = $_FILES["ecom_image"]["name"];
+                $type = $_FILES["ecom_image"]["type"];
+                $size = $_FILES["ecom_image"]["size"];
+                $error = $_FILES["ecom_image"]["error"];
+                $tmp_name = $_FILES["ecom_image"]["tmp_name"];
+                $arr = getimagesize($_FILES["ecom_image"]["tmp_name"]);
+    
+                $image_width = $arr[0];
+                $image_height = $arr[1];
+                $ecom_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+                if($ecom_image_link == 'ext_err')
+                {
+                    return $ecom_image_link;
+                }elseif($ecom_image_link == 'file_err')
+                {
+                    return $ecom_image_link;
+                }elseif($ecom_image_link == 'dimension_err')
+                {
+                    return $ecom_image_link;
+                }else{
+                    $myQuery = "UPDATE products_and_services SET 
+                    ecom_image = '$ecom_image_link'
+                    WHERE id = 1";
+
+                    $result = mysqli_query($this->db, $myQuery);
+                    if(!$result){
+                    return "Error: " .mysqli_error($this->db);
+                    }
+                     }
+                }
+
+                
+
+                $ecom_ex = $data['ecom_ex'];
+                $ecom_desc = $data['ecom_desc'];
+
+                    $query = "UPDATE products_and_services SET 
+                    ecom_ex = '$ecom_ex',
+                    ecom_desc = '$ecom_desc'
+                    WHERE id = 1";
+                    
+                    $query_result = mysqli_query($this->db, $query);
+                    if(!$query_result){
+                    return "Error: " .mysqli_error($this->db);
+                    }else{
+                    return 'good';
+                    }
+
+                
+
+            }elseif(isset($_POST['submit']) && $_POST['submit'] == 'erp_upload')
+            {
+
+                if(!empty(basename($_FILES["erp_image"]["name"])))
+                {
+                $name = $_FILES["erp_image"]["name"];
+                $type = $_FILES["erp_image"]["type"];
+                $size = $_FILES["erp_image"]["size"];
+                $error = $_FILES["erp_image"]["error"];
+                $tmp_name = $_FILES["erp_image"]["tmp_name"];
+                $arr = getimagesize($_FILES["erp_image"]["tmp_name"]);
+    
+                $image_width = $arr[0];
+                $image_height = $arr[1];
+                $erp_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+                if($erp_image_link == 'ext_err')
+                {
+                    return $erp_image_link;
+                }elseif($erp_image_link == 'file_err')
+                {
+                    return $erp_image_link;
+                }elseif($erp_image_link == 'dimension_err')
+                {
+                    return $erp_image_link;
+                }else{
+                    $myQuery = "UPDATE products_and_services SET 
+                    erp_image = '$erp_image_link'
+                    WHERE id = 1";
+
+                    $result = mysqli_query($this->db, $myQuery);
+                    if(!$result){
+                    return "Error: " .mysqli_error($this->db);
+                    }
+                     }
+                }
+
+                
+
+                $erp_ex = $data['erp_ex'];
+                $erp_desc = $data['erp_desc'];
+
+                    $query = "UPDATE products_and_services SET 
+                    erp_ex = '$erp_ex',
+                    erp_desc = '$erp_desc'
+                    WHERE id = 1";
+                    
+                    $query_result = mysqli_query($this->db, $query);
+                    if(!$query_result){
+                    return "Error: " .mysqli_error($this->db);
+                    }else{
+                    return 'good';
+                    }
+
+                
+
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function uploadPnSPageDetails($data)
     {
         if(is_object($data) || is_array($data))
         {

@@ -49,11 +49,57 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 
+        <!-- WYSIWYG Editor  -->
+        <script src="../vendor/tinymce/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>
+    // tinymce.init({
+    //   selector: 'textarea#default-editor',
+    //   plugins: 'code'
+    // });
+
+    tinymce.init({
+      selector: 'textarea#default-editor',
+      plugins: 'advlist autolink lists link image charmap preview anchor pagebreak code visualchars wordcount',
+	  setup: function(editor) {
+	  	var max = 1000;
+	    editor.on('submit', function(event) {
+		  var numChars = tinymce.activeEditor.plugins.wordcount.body.getCharacterCount();
+		  if (numChars > max) {
+            alert("Only a maximum " + max + " characters are allowed.");
+			event.preventDefault();
+			return false;
+		  }
+		});
+	  }
+   });
+
+
+   tinymce.init({
+      selector: 'textarea#excerpt-editor',
+      plugins: 'advlist autolink lists link image charmap preview anchor pagebreak code visualchars wordcount',
+	  setup: function(editor) {
+	  	var max = 400;
+	    editor.on('submit', function(event) {
+		  var numChars = tinymce.activeEditor.plugins.wordcount.body.getCharacterCount();
+		  if (numChars > max) {
+            alert("Only a maximum " + max + " characters are allowed.");
+			event.preventDefault();
+			return false;
+		  }
+		});
+	  }
+   });
+  </script>
+
+
+
 
   <?php
-  if(isset($_POST['main_text']))
+  if(isset($_POST['submit']))
   {
     $uploadStatus = $mainPlug->uploadPnSPage($_POST);
+    // echo $uploadStatus;
+    // die();
     if($uploadStatus == 'good')
     { 
         echo "     <script type='text/javascript'>   
@@ -62,7 +108,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
         toastr.options.closeButton = true;
         toastr.options.progressBar = true;
         toastr.options.timeOut = 30000;
-        toastr.success('Homepage Updated', 'Success');
+        toastr.success('Products & Services Page Updated', 'Success');
     });
     </script>";
     }elseif($uploadStatus == 'ext_err')
@@ -217,7 +263,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
         toastr.options.closeButton = true;
         toastr.options.progressBar = true;
         toastr.options.timeOut = 30000;
-        toastr.success('Homepage Updated', 'Success');
+        toastr.success('Products & Services Page Updated', 'Success');
     });
     </script>";
     }
@@ -276,54 +322,9 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:../partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <div class="user-profile">
-          <div class="user-image">
-            <img src="../images/faces/person.png">
-          </div>
-          <div class="user-name">
-            Dosh Website CMS
-          </div>
-          <div class="user-designation">
-              Admin
-          </div>
-        </div>
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link disabled" href="../index.html">
-              <i class="icon-bar-graph-2 menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-              <i class="icon-layout menu-icon"></i>
-              <span class="menu-title">Pages</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-basic">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="../pages/homepage.php">Homepage</a></li>
-                <li class="nav-item"> <a class="nav-link" href="../pages/about.php">About Page</a></li>
-                <li class="nav-item"> <a class="nav-link" href="../pages/product_services.php">Products & Services</a></li>
-                <li class="nav-item"> <a class="nav-link" href="../pages/contact.php">Contact Page</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../pages/footer.php">
-              <i class="icon-layout menu-icon"></i>
-              <span class="menu-title">Footer</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../pages/preview.html">
-              <i class="icon-paper menu-icon"></i>
-              <span class="menu-title">Website Preview</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <?php
+    include_once('sidebar.php');
+      ?>
       <!-- partial -->
       <?php
       $pnspage_result = $mainPlug->fetchPnSPageDetails();
@@ -343,16 +344,16 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                   <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
                     <div class="form-group">
                       <label for="exampleInputEmail1">Main Heading</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="main_heading" value="<?php echo $pns_data['main_heading']; ?>" required maxlength="25">
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="main_title" value="<?php echo $pns_data['main_title']; ?>" required maxlength="25">
                       <p style="color:red">Max number of characters: 25</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleTextarea1">Main Description</label>
-                      <textarea class="form-control" id="exampleTextarea1" rows="4" name="main_desc" required maxlength="600"><?php echo $pns_data['main_desc'] ?></textarea>
+                      <label for="default-editor">Main Description</label>
+                      <textarea class="form-control" id="default-editor" rows="4" name="main_desc" required maxlength="600"><?php echo $pns_data['main_desc'] ?></textarea>
                       <p style="color:red">Max number of characters: 600</p>
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" name="main_text">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="main_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -374,8 +375,8 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                   <div class="row">
                   <div class="responsive">
                     <div class="gallery">
-                      <a target="_blank" href="<?php echo $pns_data['banner_img']; ?>">
-                        <img src="<?php echo $pns_data['banner_img']; ?>" alt="Cinque Terre" width="600" height="400">
+                      <a target="_blank" href="<?php echo $pns_data['banner_image']; ?>">
+                        <img src="<?php echo $pns_data['banner_image']; ?>" alt="Cinque Terre" width="600" height="400">
                       </a>
                       <div class="desc">Products and Services Banner</div>
                     </div>
@@ -385,15 +386,15 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                     <div class="form-group">
                       <div class="mb-3">
                       <label for="formFile" class="form-label">Banner Image</label>
-                      <input class="form-control" type="file" id="formFile" name="pns_banner">
+                      <input class="form-control" type="file" id="formFile" name="banner_image">
                       </div>
                       <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
                       <p style="color:red">Image extesion can be SVG, PNG, JPG or JPEG</p>
                     </div>
 
-                    <button type="submit" class="btn btn-primary mr-2" name="banner_submit">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="banner_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -415,36 +416,38 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                   <div class="row">
                   <div class="responsive">
                     <div class="gallery">
-                      <a target="_blank" href="<?php echo $pns_data['pns_img1']; ?>">
-                        <img src="<?php echo $pns_data['pns_img1']; ?>" alt="Cinque Terre" width="600" height="400">
+                      <a target="_blank" href="<?php echo $pns_data['insurance_image']; ?>">
+                        <img src="<?php echo $pns_data['insurance_image']; ?>" alt="Cinque Terre" width="600" height="400">
                       </a>
-                      <div class="desc">P&S Image 1</div>
+                      <div class="desc">Insurance Image</div>
                     </div>
+                    <!-- <form method="POST" action="" enctype="multipart/form-data">
+                      <input class="form-control" type="hidden" id="formFile" name="insurance_image">
+                    <button type="submit" class="btn btn-danger" style="margin: 10px 0 57px 70%;" name="submit" value="delete">Delete Image</button></form> -->
                   </div>
                 </div>
                   <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
                     <div class="form-group">
                       <div class="mb-3">
-                      <label for="formFile" class="form-label">Upload Image 1</label>
-                      <input class="form-control" type="file" id="formFile" name="pns_img1">
+                      <label for="formFile" class="form-label">Upload Insurance Image</label>
+                      <input class="form-control" type="file" id="formFile" name="insurance_image">
                       </div>
                       <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
                       <p style="color:red">Image extesion can be SVG, PNG, JPG or JPEG</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputEmail1">P&S Heading 1</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="pns_heading1" value="<?php echo $pns_data['pns_heading1']; ?>" required maxlength="16">
-                      <p style="color:red">Max number of characters: 16</p>
+                      <label for="exampleInputEmail1">Insurance Excerpt</label>
+                      <textarea class="form-control" id="excerpt-editor" rows="4" name="insurance_ex" required><?php echo $pns_data['insurance_ex']; ?></textarea>
+                      <p style="color:red">Max number of characters: 400</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleTextarea1">P&S Description 1</label>
-                      <textarea class="form-control" id="exampleTextarea1" rows="4" name="pns_desc1" required maxlength="255"><?php echo $pns_data['pns_desc1']; ?></textarea>
-                      <p style="color:red">Max number of characters: 255</p>
+                      <label for="default-editor">Insurance Description</label>
+                      <textarea class="form-control" id="default-editor" rows="4" name="insurance_desc" required><?php echo $pns_data['insurance_desc']; ?></textarea>
+                      <p style="color:red">Max number of characters: 2000</p>
                     </div>
-                    <input type="hidden" name="pns_submit1" value="true" >
-                    <button type="submit" class="btn btn-primary mr-2" name="pns_submit">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="insuance_upload" >Submit</button>
+                    <button typle="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -464,36 +467,35 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                   <div class="row">
                   <div class="responsive">
                     <div class="gallery">
-                      <a target="_blank" href="<?php echo $pns_data['pns_img2']; ?>">
-                        <img src="<?php echo $pns_data['pns_img2']; ?>" alt="Cinque Terre" width="600" height="400">
+                      <a target="_blank" href="<?php echo $pns_data['finance_image']; ?>">
+                        <img src="<?php echo $pns_data['finance_image']; ?>" alt="Cinque Terre" width="600" height="400">
                       </a>
-                      <div class="desc">P&S Image 2</div>
+                      <div class="desc">Finance image</div>
                     </div>
                   </div>
                 </div>
                   <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
                     <div class="form-group">
                       <div class="mb-3">
-                      <label for="formFile" class="form-label">Upload Image 2</label>
-                      <input class="form-control" type="file" id="formFile" name="pns_img2">
+                      <label for="formFile" class="form-label">Upload Finance Image</label>
+                      <input class="form-control" type="file" id="formFile" name="finance_image">
                       </div>
                       <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
                       <p style="color:red">Image extesion can be SVG, PNG, JPG or JPEG</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputEmail1">P&S Heading 2</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="pns_heading2" value="<?php echo $pns_data['pns_heading2']; ?>" required maxlength="16">
-                      <p style="color:red">Max number of characters: 16</p>
+                      <label for="exampleInputEmail1">Finance Excerpt</label>
+                      <textarea class="form-control" id="excerpt-editor" rows="4" name="finance_ex" required><?php echo $pns_data['finance_ex']; ?></textarea>
+                      <p style="color:red">Max number of characters: 400</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleTextarea1">P&S Description 1</label>
-                      <textarea class="form-control" id="exampleTextarea1" rows="4" name="pns_desc2" required maxlength="255"><?php echo $pns_data['pns_desc2']; ?></textarea>
+                      <label for="default-editor">Finance Description</label>
+                      <textarea class="form-control" id="default-editor" rows="4" name="finance_desc" required maxlength="255"><?php echo $pns_data['finance_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 255</p>
                     </div>
-                    <input type="hidden" name="pns_submit2" value="true" >
-                    <button type="submit" class="btn btn-primary mr-2" name="pns_submit">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="finance_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -516,36 +518,35 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                   <div class="row">
                   <div class="responsive">
                     <div class="gallery">
-                      <a target="_blank" href="<?php echo $pns_data['pns_img3']; ?>">
-                        <img src="<?php echo $pns_data['pns_img3']; ?>" alt="Cinque Terre" width="600" height="400">
+                      <a target="_blank" href="<?php echo $pns_data['ride_image']; ?>">
+                        <img src="<?php echo $pns_data['ride_image']; ?>" alt="Cinque Terre" width="600" height="400">
                       </a>
-                      <div class="desc">P&S Image 3</div>
+                      <div class="desc">Ride Image</div>
                     </div>
                   </div>
                 </div>
                   <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
                     <div class="form-group">
                       <div class="mb-3">
-                      <label for="formFile" class="form-label">Upload Image 3</label>
-                      <input class="form-control" type="file" id="formFile" name="pns_img3">
+                      <label for="formFile" class="form-label">Upload Ride Image</label>
+                      <input class="form-control" type="file" id="formFile" name="ride_image">
                       </div>
                       <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
                       <p style="color:red">Image extesion can be SVG, PNG, JPG or JPEG</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputEmail1">P&S Heading 3</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="pns_heading3" value="<?php echo $pns_data['pns_heading3']; ?>" required maxlength="16">
-                      <p style="color:red">Max number of characters: 16</p>
+                      <label for="exampleInputEmail1">Ride Excerpt</label>
+                      <textarea class="form-control" id="excerpt-editor" rows="4" name="ride_ex" required><?php echo $pns_data['ride_ex']; ?></textarea>
+                      <p style="color:red">Max number of characters: 400</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleTextarea1">P&S Description 1</label>
-                      <textarea class="form-control" id="exampleTextarea1" rows="4" name="pns_desc3" required maxlength="255"><?php echo $pns_data['pns_desc3']; ?></textarea>
+                      <label for="default-editor">Ride Description</label>
+                      <textarea class="form-control" id="default-editor" rows="4" name="ride_desc" required maxlength="255"><?php echo $pns_data['ride_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 255</p>
                     </div>
-                    <input type="hidden" name="pns_submit3" value="true" >
-                    <button type="submit" class="btn btn-primary mr-2" name="pns_submit">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="ride_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -568,36 +569,35 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                   <div class="row">
                   <div class="responsive">
                     <div class="gallery">
-                      <a target="_blank" href="<?php echo $pns_data['pns_img4']; ?>">
-                        <img src="<?php echo $pns_data['pns_img4']; ?>" alt="Cinque Terre" width="600" height="400">
+                      <a target="_blank" href="<?php echo $pns_data['ecom_image']; ?>">
+                        <img src="<?php echo $pns_data['ecom_image']; ?>" alt="Cinque Terre" width="600" height="400">
                       </a>
-                      <div class="desc">P&S Image 4</div>
+                      <div class="desc">E-Commerce Image</div>
                     </div>
                   </div>
                 </div>
                   <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
                     <div class="form-group">
                       <div class="mb-3">
-                      <label for="formFile" class="form-label">Upload Image 1</label>
-                      <input class="form-control" type="file" id="formFile" name="pns_img4">
+                      <label for="formFile" class="form-label">Upload E-Commerce Image</label>
+                      <input class="form-control" type="file" id="formFile" name="ecom_image">
                       </div>
                       <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
                       <p style="color:red">Image extesion can be SVG, PNG, JPG or JPEG</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputEmail1">P&S Heading 1</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="pns_heading4" value="<?php echo $pns_data['pns_heading4']; ?>" required maxlength="16">
-                      <p style="color:red">Max number of characters: 16</p>
+                      <label for="exampleInputEmail1">E-Commerce Excerpt</label>
+                      <textarea class="form-control" id="excerpt-editor" rows="4" name="ecom_ex" required><?php echo $pns_data['ecom_ex']; ?></textarea>
+                      <p style="color:red">Max number of characters: 400</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleTextarea1">P&S Description 1</label>
-                      <textarea class="form-control" id="exampleTextarea1" rows="4" name="pns_desc4" required maxlength="255"><?php echo $pns_data['pns_desc4']; ?></textarea>
+                      <label for="default-editor">E-Commerce Description</label>
+                      <textarea class="form-control" id="default-editor" rows="4" name="ecom_desc" required maxlength="255"><?php echo $pns_data['ecom_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 255</p>
                     </div>
-                    <input type="hidden" name="pns_submit4" value="true" >
-                    <button type="submit" class="btn btn-primary mr-2" name="pns_submit">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="ecom_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -621,36 +621,35 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                   <div class="row">
                   <div class="responsive">
                     <div class="gallery">
-                      <a target="_blank" href="<?php echo $pns_data['pns_img5']; ?>">
-                        <img src="<?php echo $pns_data['pns_img5']; ?>" alt="Cinque Terre" width="600" height="400">
+                      <a target="_blank" href="<?php echo $pns_data['erp_image']; ?>">
+                        <img src="<?php echo $pns_data['erp_image']; ?>" alt="Cinque Terre" width="600" height="400">
                       </a>
-                      <div class="desc">P&S Image 5</div>
+                      <div class="desc">ERP Image</div>
                     </div>
                   </div>
                 </div>
                   <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
                     <div class="form-group">
                       <div class="mb-3">
-                      <label for="formFile" class="form-label">Upload Image 1</label>
-                      <input class="form-control" type="file" id="formFile" name="pns_img5">
+                      <label for="formFile" class="form-label">Upload ERP Image</label>
+                      <input class="form-control" type="file" id="formFile" name="erp_image">
                       </div>
                       <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
                       <p style="color:red">Image extesion can be SVG, PNG, JPG or JPEG</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputEmail1">P&S Heading 1</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="pns_heading5" value="<?php echo $pns_data['pns_heading5']; ?>" required maxlength="16">
-                      <p style="color:red">Max number of characters: 16</p>
+                      <label for="exampleInputEmail1">ERP Excerpt</label>
+                      <textarea class="form-control" id="excerpt-editor" rows="4" name="erp_ex" required><?php echo $pns_data['erp_ex']; ?></textarea>
+                      <p style="color:red">Max number of characters: 400</p>
                     </div>
                     <div class="form-group">
-                      <label for="exampleTextarea1">P&S Description 5</label>
-                      <textarea class="form-control" id="exampleTextarea1" rows="4" name="pns_desc5" required maxlength="255"><?php echo $pns_data['pns_desc5']; ?></textarea>
+                      <label for="default-editor">ERP Description</label>
+                      <textarea class="form-control" id="default-editor" rows="4" name="erp_desc" required maxlength="255"><?php echo $pns_data['erp_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 255</p>
                     </div>
-                    <input type="hidden" name="pns_submit5" value="true" >
-                    <button type="submit" class="btn btn-primary mr-2" name="pns_submit">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="erp_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>

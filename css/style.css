@@ -20098,7 +20098,7 @@ code {
   color: #001737;
   margin-bottom: .5rem;
   text-transform: capitalize;
-  font-size: 0.875rem;
+  font-size: 1.2rem;
   font-weight: bold;
 }
 
@@ -20665,10 +20665,12 @@ select.border-dark.tt-hint:focus {
 }
 
 .form-group label {
-  font-size: 0.875rem;
+  font-size: 0.975rem;
   line-height: 1.4rem;
   vertical-align: top;
   margin-bottom: .5rem;
+  font-weight: bolder;
+
 }
 
 .form-group.has-danger .form-control, .form-group.has-danger .select2-container--default .select2-selection--single, .select2-container--default .form-group.has-danger .select2-selection--single, .form-group.has-danger .select2-container--default .select2-selection--single .select2-search__field, .select2-container--default .select2-selection--single .form-group.has-danger .select2-search__field, .form-group.has-danger .typeahead,
