@@ -86,8 +86,8 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
   if(isset($_POST['submit']))
   {
     $uploadStatus = $mainPlug->uploadHomePageDetails($_POST);
-    echo $uploadStatus;
-    die();
+    // echo $uploadStatus;
+    // die();
 
     if($uploadStatus == 'good')
     { 
@@ -139,6 +139,9 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
   
     
   
+  }elseif(isset($_POST['finance_upload'])){
+    echo 'fina';
+    die();
   }
   
   
@@ -396,7 +399,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                       <label for="formFile" class="form-label">Header Image</label>
                       <input class="form-control" type="file" id="formFile" name="header_image">
                       </div>
-                      <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
+                      <p style="color:red">Image should be above 800 x 500 and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
                       <p style="color:red">Image extesion can be SVG, PNG, JPG or JPEG</p>
                     </div>
@@ -424,8 +427,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
 
 
 
-
-
+            
 
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
@@ -471,7 +473,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                       <p style="color:red">Max number of characters: 16</p>
                     </div>
                     <button type="submit" class="btn btn-primary mr-2" name="submit" value="finance_upload">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -506,11 +508,11 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                     </div>
                   </div>
                 </div>
-                  <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
+                  <form class="forms-sample" method="POST" action="<?=$_SERVER['PHP_SELF'];?>" enctype="multipart/form-data">
                     <div class="form-group">
                       <div class="mb-3">
                       <label for="formFile" class="form-label">Upload Image</label>
-                      <input class="form-control" type="file" id="formFile" name="home-image1">
+                      <input class="form-control" type="file" id="formFile" name="insurance_image">
                       </div>
                       <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
@@ -518,21 +520,21 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Heading</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="home_image1_heading" value="<?php echo $homepage_data['insurance_title']; ?>" required maxlength="16">
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="insurance_title" value="<?php echo $homepage_data['insurance_title']; ?>" required maxlength="16">
                       <p style="color:red">Max number of characters: 16</p>
                     </div>
                     <div class="form-group">
                       <label for="exampleTextarea1">Description</label>
-                      <textarea class="form-control" id="default-editor" rows="4" name="home_image1_desc" required maxlength="255"><?php echo $homepage_data['insurance_desc']; ?></textarea>
+                      <textarea class="form-control" id="default-editor" rows="4" name="insurance_desc" required maxlength="255"><?php echo $homepage_data['insurance_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 255</p>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">CTA Button</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="home_image1_heading" value="<?php echo $homepage_data['insurance_btn']; ?>" required maxlength="16">
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="insurance_btn" value="<?php echo $homepage_data['insurance_btn']; ?>" required maxlength="16">
                       <p style="color:red">Max number of characters: 16</p>
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" name="insurance_upload">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="insurance_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -572,7 +574,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                     <div class="form-group">
                       <div class="mb-3">
                       <label for="formFile" class="form-label">Upload Image</label>
-                      <input class="form-control" type="file" id="formFile" name="home-image1">
+                      <input class="form-control" type="file" id="formFile" name="pay_image">
                       </div>
                       <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
@@ -580,21 +582,21 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Heading</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="home_image1_heading" value="<?php echo $homepage_data['pay_title']; ?>" required maxlength="16">
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="pay_title" value="<?php echo $homepage_data['pay_title']; ?>" required maxlength="16">
                       <p style="color:red">Max number of characters: 16</p>
                     </div>
                     <div class="form-group">
                       <label for="exampleTextarea1">Description</label>
-                      <textarea class="form-control" id="default-editor" rows="4" name="home_image1_desc" required maxlength="255"><?php echo $homepage_data['pay_desc']; ?></textarea>
+                      <textarea class="form-control" id="default-editor" rows="4" name="pay_desc" required maxlength="255"><?php echo $homepage_data['pay_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 255</p>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">CTA Button</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="home_image1_heading" value="<?php echo $homepage_data['pay_btn']; ?>" required maxlength="16">
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="pay_btn" value="<?php echo $homepage_data['pay_btn']; ?>" required maxlength="16">
                       <p style="color:red">Max number of characters: 16</p>
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" name="pay_upload">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="pay_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -643,7 +645,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                     <div class="form-group">
                       <div class="mb-3">
                       <label for="formFile" class="form-label">Upload Image</label>
-                      <input class="form-control" type="file" id="formFile" name="home-image1">
+                      <input class="form-control" type="file" id="formFile" name="ride_image">
                       </div>
                       <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
@@ -651,21 +653,21 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Heading</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="home_image1_heading" value="<?php echo $homepage_data['ride_title']; ?>" required maxlength="16">
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="ride_title" value="<?php echo $homepage_data['ride_title']; ?>" required maxlength="16">
                       <p style="color:red">Max number of characters: 16</p>
                     </div>
                     <div class="form-group">
                       <label for="exampleTextarea1">Description</label>
-                      <textarea class="form-control" id="default-editor" rows="4" name="home_image1_desc" required maxlength="255"><?php echo $homepage_data['ride_desc']; ?></textarea>
+                      <textarea class="form-control" id="default-editor" rows="4" name="ride_desc" required maxlength="255"><?php echo $homepage_data['ride_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 255</p>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">CTA Button</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="home_image1_heading" value="<?php echo $homepage_data['ride_btn']; ?>" required maxlength="16">
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="ride_btn" value="<?php echo $homepage_data['ride_btn']; ?>" required maxlength="16">
                       <p style="color:red">Max number of characters: 16</p>
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" name="ride_upload">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="ride_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -714,7 +716,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                     <div class="form-group">
                       <div class="mb-3">
                       <label for="formFile" class="form-label">Upload Image</label>
-                      <input class="form-control" type="file" id="formFile" name="home-image1">
+                      <input class="form-control" type="file" id="formFile" name="erp_image">
                       </div>
                       <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
@@ -722,21 +724,21 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Heading</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="home_image1_heading" value="<?php echo $homepage_data['erp_title']; ?>" required maxlength="16">
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="erp_title" value="<?php echo $homepage_data['erp_title']; ?>" required maxlength="16">
                       <p style="color:red">Max number of characters: 16</p>
                     </div>
                     <div class="form-group">
                       <label for="exampleTextarea1">Description</label>
-                      <textarea class="form-control" id="default-editor" rows="4" name="home_image1_desc" required maxlength="255"><?php echo $homepage_data['erp_desc']; ?></textarea>
+                      <textarea class="form-control" id="default-editor" rows="4" name="erp_desc" required maxlength="255"><?php echo $homepage_data['erp_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 255</p>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">CTA Button</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="home_image1_heading" value="<?php echo $homepage_data['erp_btn']; ?>" required maxlength="16">
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="erp_btn" value="<?php echo $homepage_data['erp_btn']; ?>" required maxlength="16">
                       <p style="color:red">Max number of characters: 16</p>
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" name="erp_upload">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="erp_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -778,7 +780,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                     <div class="form-group">
                       <div class="mb-3">
                       <label for="formFile" class="form-label">Upload Image</label>
-                      <input class="form-control" type="file" id="formFile" name="home-image1">
+                      <input class="form-control" type="file" id="formFile" name="ecom_image">
                       </div>
                       <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
                       <p style="color:red">Image size must be less than 1MB</p>
@@ -786,21 +788,21 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Heading</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="home_image1_heading" value="<?php echo $homepage_data['ecom_title']; ?>" required maxlength="16">
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="ecom_title" value="<?php echo $homepage_data['ecom_title']; ?>" required maxlength="16">
                       <p style="color:red">Max number of characters: 16</p>
                     </div>
                     <div class="form-group">
                       <label for="exampleTextarea1">Description</label>
-                      <textarea class="form-control" id="default-editor" rows="4" name="home_image1_desc" required maxlength="255"><?php echo $homepage_data['ecom_desc']; ?></textarea>
+                      <textarea class="form-control" id="default-editor" rows="4" name="ecom_desc" required maxlength="255"><?php echo $homepage_data['ecom_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 255</p>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">CTA Button</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="home_image1_heading" value="<?php echo $homepage_data['ecom_btn']; ?>" required maxlength="16">
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="ecom_btn" value="<?php echo $homepage_data['ecom_btn']; ?>" required maxlength="16">
                       <p style="color:red">Max number of characters: 16</p>
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" name="ecom_upload">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="ecom_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -824,16 +826,16 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                   <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
                     <div class="form-group">
                       <label for="exampleInputEmail1">Sign Up Heading</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" name="home_signup_heading" value="<?php echo $homepage_data['signup_title']; ?>" required maxlength="100">
+                      <input type="text" class="form-control" id="exampleInputEmail1" name="signup_title" value="<?php echo $homepage_data['signup_title']; ?>" required maxlength="100">
                       <p style="color:red">Max number of characters: 25</p>
                     </div>
                     <div class="form-group">
                       <label for="exampleTextarea1">Sign Up Description</label>
-                      <textarea class="form-control" id="default-editor" rows="4" name="home_signup_desc" required maxlength="1000"><?php echo $homepage_data['signup_desc']; ?></textarea>
+                      <textarea class="form-control" id="default-editor" rows="4" name="signup_desc" required maxlength="1000"><?php echo $homepage_data['signup_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 255</p>
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" name="homepage_section3">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="signup_upload">Submit</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
               </div>

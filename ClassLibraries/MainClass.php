@@ -132,7 +132,7 @@ class mainClass extends DataBase{
         $imageName = str_replace(' ', '', basename($name));
         $target_file = $target_dir . $datetime . $imageName;
         $flieLoc = '../images/uploads/'. $datetime . $imageName;
-        $allowedExts = array("png", "PNG", "SVG", "svg,", "JPG", "jpg", "JPEG", "jpeg");
+        $allowedExts = array("png", "PNG", "SVG", "svg,", "JPG", "jpg", "JPEG", "jpeg", "webp");
         $extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
         $imageLink = 'http://localhost/dosh-cms/'.$target_file;
         
@@ -309,88 +309,46 @@ class mainClass extends DataBase{
   function uploadHomePageDetails($data)
   {
 
-    if(!empty($data['submit']) && $data['submit'] == 'header_upload')
-    {
-        // return 'good';
-      if(is_object($data) || is_array($data)){
-        //   $slider1_heading = filter_var($data['slider1_heading'], FILTER_SANITIZE_STRING);
+    if(is_object($data) || is_array($data))
+     {
 
-
-
-        if(!empty(basename($_FILES["slide-1"]["name"])))
+        if(!empty($data['submit']) && $data['submit'] == 'header_upload')
         {
-            $name = $_FILES["slide-1"]["name"];
-            $type = $_FILES["slide-1"]["type"];
-            $size = $_FILES["slide-1"]["size"];
-            $error = $_FILES["slide-1"]["error"];
-            $tmp_name = $_FILES["slide-1"]["tmp_name"];
-            $arr = getimagesize($_FILES["slide-1"]["tmp_name"]);
 
-            $image_width = $arr[0];
-            $image_height = $arr[1];
-            $slide1_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
-            if($slide1_link == 'ext_err')
+            if(!empty(basename($_FILES["header_image"]["name"])))
             {
-                return $slide1_link;
-            }elseif($slide1_link == 'file_err')
-            {
-                return $slide1_link;
-            }elseif($slide1_link == 'dimension_err')
-            {
-                return $slide1_link;
+                $name = $_FILES["header_image"]["name"];
+                $type = $_FILES["header_image"]["type"];
+                $size = $_FILES["header_image"]["size"];
+                $error = $_FILES["header_image"]["error"];
+                $tmp_name = $_FILES["header_image"]["tmp_name"];
+                $arr = getimagesize($_FILES["header_image"]["tmp_name"]);
+
+                $image_width = $arr[0];
+                $image_height = $arr[1];
+                $header_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+                if($header_image_link == 'ext_err')
+                {
+                    return $header_image_link;
+                }elseif($header_image_link == 'file_err')
+                {
+                    return $header_image_link;
+                }elseif($header_image_link == 'dimension_err')
+                {
+                    return $header_image_link;
+                }
+                // return $slide1_link;
             }
-            // return $slide1_link;
-        }
-        
-        if(!empty(basename($_FILES["slide-2"]["name"])))
-        {
-            $name = $_FILES["slide-2"]["name"];
-            $type = $_FILES["slide-2"]["type"];
-            $size = $_FILES["slide-2"]["size"];
-            $tmp_name = $_FILES["slide-2"]["tmp_name"];
-            $error = $_FILES["slide-2"]["error"];
-            $arr = getimagesize($_FILES["slide-2"]["tmp_name"]);
-
-            $image_width = $arr[0];
-            $image_height = $arr[1];
-            $slide2_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
-            if($slide2_link == 'ext_err')
-            {
-                return $slide2_link;
-            }elseif($slide2_link == 'file_err')
-            {
-                return $slide2_link;
-            }elseif($slide2_link == 'dimension_err')
-            {
-                return $slide2_link;
-            }
-            // return $slide2_link;
-        }
 
 
-        //   $slider1_image = empty(basename($_FILES["slide-2"]["name"]) ? NULL
-          $slider1_heading = filter_var($data['slider1_heading'], FILTER_SANITIZE_STRING);
-          $slider1_desc = $data['slider1_desc'];
-          $slider2_heading = filter_var($data['slider2_heading'], FILTER_SANITIZE_STRING);
-          $slider2_desc = $data['slider2_desc'];
-          
-          if(isset($slide1_link))
+                $header_title = filter_var($data['header_title'], FILTER_SANITIZE_STRING);
+                $header_desc = $data['header_desc'];
+                $header_btn = filter_var($data['header_btn'], FILTER_SANITIZE_STRING);
+                
+          if(isset($header_image_link))
           {
-            $myQuery = "UPDATE homepage SET 
-            home_slider1_image = '$slide1_link'
-            WHERE id = 1";
-  
-            
-            $result = mysqli_query($this->db, $myQuery);
-            if(!$result){
-            return "Error: " .mysqli_error($this->db);
-            }
-          }
-
-          if(isset($slide2_link))
-          {
-            $myQuery = "UPDATE homepage SET 
-            home_slider2_image = '$slide2_link'
+            $myQuery = "UPDATE home SET 
+            header_image = '$header_image_link'
             WHERE id = 1";
   
             
@@ -400,11 +358,10 @@ class mainClass extends DataBase{
             }
           }
           
-          $myQuery = "UPDATE homepage SET 
-          home_slider1_heading = '$slider1_heading',
-          home_slider1_desc = '$slider1_desc',
-          home_slider2_heading = '$slider2_heading',
-          home_slider2_desc = '$slider2_desc'
+          $myQuery = "UPDATE home SET 
+          header_title = '$header_title',
+          header_desc = '$header_desc',
+          header_btn = '$header_btn'
           WHERE id = 1";
 
           
@@ -414,13 +371,417 @@ class mainClass extends DataBase{
           }else{
           return 'good';
           }
-      }
 
-    }else{
-        return 'not done';
+
+
+        }elseif(!empty($data['submit']) && $data['submit'] == 'finance_upload')
+        {
+  
+          if(!empty(basename($_FILES["finance_image"]["name"])))
+          {
+              $name = $_FILES["finance_image"]["name"];
+              $type = $_FILES["finance_image"]["type"];
+              $size = $_FILES["finance_image"]["size"];
+              $error = $_FILES["finance_image"]["error"];
+              $tmp_name = $_FILES["finance_image"]["tmp_name"];
+              $arr = getimagesize($_FILES["finance_image"]["tmp_name"]);
+  
+              $image_width = $arr[0];
+              $image_height = $arr[1];
+              $finance_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+              if($finance_image_link == 'ext_err')
+              {
+                  return $finance_image_link;
+              }elseif($finance_image_link == 'file_err')
+              {
+                  return $finance_image_link;
+              }elseif($finance_image_link == 'dimension_err')
+              {
+                  return $finance_image_link;
+              }
+              // return $slide1_link;
+          }
+  
+  
+          //   $slider1_image = empty(basename($_FILES["slide-2"]["name"]) ? NULL
+            $finance_title = filter_var($data['finance_title'], FILTER_SANITIZE_STRING);
+            $finance_desc = $data['finance_desc'];
+            $finance_btn = filter_var($data['finance_btn'], FILTER_SANITIZE_STRING);
+            
+            if(isset($finance_image_link))
+            {
+              $myQuery = "UPDATE home SET 
+              finance_image = '$finance_image_link'
+              WHERE id = 1";
+    
+              
+              $result = mysqli_query($this->db, $myQuery);
+              if(!$result){
+              return "Error: " .mysqli_error($this->db);
+              }
+            }
+            
+            $myQuery = "UPDATE home SET 
+            finance_title = '$finance_title',
+            finance_desc = '$finance_desc',
+            finance_btn = '$finance_btn'
+            WHERE id = 1";
+  
+            
+            $result = mysqli_query($this->db, $myQuery);
+            if(!$result){
+            return "Error: " .mysqli_error($this->db);
+            }else{
+            return 'good';
+            }
+
+
+        }elseif(!empty($data['submit']) && $data['submit'] == 'insurance_upload')
+        {
+  
+          if(!empty(basename($_FILES["insurance_image"]["name"])))
+          {
+              $name = $_FILES["insurance_image"]["name"];
+              $type = $_FILES["insurance_image"]["type"];
+              $size = $_FILES["insurance_image"]["size"];
+              $error = $_FILES["insurance_image"]["error"];
+              $tmp_name = $_FILES["insurance_image"]["tmp_name"];
+              $arr = getimagesize($_FILES["insurance_image"]["tmp_name"]);
+  
+              $image_width = $arr[0];
+              $image_height = $arr[1];
+              $insurance_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+              if($insurance_image_link == 'ext_err')
+              {
+                  return $insurance_image_link;
+              }elseif($insurance_image_link == 'file_err')
+              {
+                  return $insurance_image_link;
+              }elseif($insurance_image_link == 'dimension_err')
+              {
+                  return $insurance_image_link;
+              }
+              // return $slide1_link;
+          }
+  
+  
+          //   $slider1_image = empty(basename($_FILES["slide-2"]["name"]) ? NULL
+            $insurance_title = filter_var($data['insurance_title'], FILTER_SANITIZE_STRING);
+            $insurance_desc = $data['insurance_desc'];
+            $insurance_btn = filter_var($data['insurance_btn'], FILTER_SANITIZE_STRING);
+            
+            if(isset($insurance_image_link))
+            {
+              $myQuery = "UPDATE home SET 
+              insurance_image = '$insurance_image_link'
+              WHERE id = 1";
+    
+              
+              $result = mysqli_query($this->db, $myQuery);
+              if(!$result){
+              return "Error: " .mysqli_error($this->db);
+              }
+            }
+            
+            $myQuery = "UPDATE home SET 
+            insurance_title = '$insurance_title',
+            insurance_desc = '$insurance_desc',
+            insurance_btn = '$insurance_btn'
+            WHERE id = 1";
+  
+            
+            $result = mysqli_query($this->db, $myQuery);
+            if(!$result){
+            return "Error: " .mysqli_error($this->db);
+            }else{
+            return 'good';
+            }
+
+
+
+        }elseif(!empty($data['submit']) && $data['submit'] == 'pay_upload')
+        {
+  
+          if(!empty(basename($_FILES["pay_image"]["name"])))
+          {
+              $name = $_FILES["pay_image"]["name"];
+              $type = $_FILES["pay_image"]["type"];
+              $size = $_FILES["pay_image"]["size"];
+              $error = $_FILES["pay_image"]["error"];
+              $tmp_name = $_FILES["pay_image"]["tmp_name"];
+              $arr = getimagesize($_FILES["pay_image"]["tmp_name"]);
+  
+              $image_width = $arr[0];
+              $image_height = $arr[1];
+              $pay_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+              if($pay_image_link == 'ext_err')
+              {
+                  return $pay_image_link;
+              }elseif($pay_image_link == 'file_err')
+              {
+                  return $pay_image_link;
+              }elseif($pay_image_link == 'dimension_err')
+              {
+                  return $pay_image_link;
+              }
+              // return $slide1_link;
+          }
+  
+  
+          //   $slider1_image = empty(basename($_FILES["slide-2"]["name"]) ? NULL
+            $pay_title = filter_var($data['pay_title'], FILTER_SANITIZE_STRING);
+            $pay_desc = $data['pay_desc'];
+            $pay_btn = filter_var($data['pay_btn'], FILTER_SANITIZE_STRING);
+            
+            if(isset($pay_image_link))
+            {
+              $myQuery = "UPDATE home SET 
+              pay_image = '$pay_image_link'
+              WHERE id = 1";
+    
+              
+              $result = mysqli_query($this->db, $myQuery);
+              if(!$result){
+              return "Error: " .mysqli_error($this->db);
+              }
+            }
+            
+            $myQuery = "UPDATE home SET 
+            pay_title = '$pay_title',
+            pay_desc = '$pay_desc',
+            pay_btn = '$pay_btn'
+            WHERE id = 1";
+  
+            
+            $result = mysqli_query($this->db, $myQuery);
+            if(!$result){
+            return "Error: " .mysqli_error($this->db);
+            }else{
+            return 'good';
+            }
+
+
+
+        }elseif(!empty($data['submit']) && $data['submit'] == 'ride_upload')
+        {
+  
+          if(!empty(basename($_FILES["ride_image"]["name"])))
+          {
+              $name = $_FILES["ride_image"]["name"];
+              $type = $_FILES["ride_image"]["type"];
+              $size = $_FILES["ride_image"]["size"];
+              $error = $_FILES["ride_image"]["error"];
+              $tmp_name = $_FILES["ride_image"]["tmp_name"];
+              $arr = getimagesize($_FILES["ride_image"]["tmp_name"]);
+  
+              $image_width = $arr[0];
+              $image_height = $arr[1];
+              $ride_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+              if($ride_image_link == 'ext_err')
+              {
+                  return $ride_image_link;
+              }elseif($ride_image_link == 'file_err')
+              {
+                  return $ride_image_link;
+              }elseif($ride_image_link == 'dimension_err')
+              {
+                  return $ride_image_link;
+              }
+              // return $slide1_link;
+          }
+  
+  
+          //   $slider1_image = empty(basename($_FILES["slide-2"]["name"]) ? NULL
+            $ride_title = filter_var($data['ride_title'], FILTER_SANITIZE_STRING);
+            $ride_desc = $data['ride_desc'];
+            $ride_btn = filter_var($data['ride_btn'], FILTER_SANITIZE_STRING);
+            
+            if(isset($ride_image_link))
+            {
+              $myQuery = "UPDATE home SET 
+              ride_image = '$ride_image_link'
+              WHERE id = 1";
+    
+              
+              $result = mysqli_query($this->db, $myQuery);
+              if(!$result){
+              return "Error: " .mysqli_error($this->db);
+              }
+            }
+            
+            $myQuery = "UPDATE home SET 
+            ride_title = '$ride_title',
+            ride_desc = '$ride_desc',
+            ride_btn = '$ride_btn'
+            WHERE id = 1";
+  
+            
+            $result = mysqli_query($this->db, $myQuery);
+            if(!$result){
+            return "Error: " .mysqli_error($this->db);
+            }else{
+            return 'good';
+            }
+
+
+
+        }elseif(!empty($data['submit']) && $data['submit'] == 'erp_upload')
+        {
+  
+          if(!empty(basename($_FILES["erp_image"]["name"])))
+          {
+              $name = $_FILES["erp_image"]["name"];
+              $type = $_FILES["erp_image"]["type"];
+              $size = $_FILES["erp_image"]["size"];
+              $error = $_FILES["erp_image"]["error"];
+              $tmp_name = $_FILES["erp_image"]["tmp_name"];
+              $arr = getimagesize($_FILES["erp_image"]["tmp_name"]);
+  
+              $image_width = $arr[0];
+              $image_height = $arr[1];
+              $erp_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+              if($erp_image_link == 'ext_err')
+              {
+                  return $erp_image_link;
+              }elseif($erp_image_link == 'file_err')
+              {
+                  return $erp_image_link;
+              }elseif($erp_image_link == 'dimension_err')
+              {
+                  return $erp_image_link;
+              }
+              // return $slide1_link;
+          }
+  
+  
+          //   $slider1_image = empty(basename($_FILES["slide-2"]["name"]) ? NULL
+            $erp_title = filter_var($data['erp_title'], FILTER_SANITIZE_STRING);
+            $erp_desc = $data['erp_desc'];
+            $erp_btn = filter_var($data['erp_btn'], FILTER_SANITIZE_STRING);
+            
+            if(isset($erp_image_link))
+            {
+              $myQuery = "UPDATE home SET 
+              erp_image = '$erp_image_link'
+              WHERE id = 1";
+    
+              
+              $result = mysqli_query($this->db, $myQuery);
+              if(!$result){
+              return "Error: " .mysqli_error($this->db);
+              }
+            }
+            
+            $myQuery = "UPDATE home SET 
+            erp_title = '$erp_title',
+            erp_desc = '$erp_desc',
+            erp_btn = '$erp_btn'
+            WHERE id = 1";
+  
+            
+            $result = mysqli_query($this->db, $myQuery);
+            if(!$result){
+            return "Error: " .mysqli_error($this->db);
+            }else{
+            return 'good';
+            }
+
+
+            
+        }elseif(!empty($data['submit']) && $data['submit'] == 'ecom_upload')
+        {
+  
+          if(!empty(basename($_FILES["ecom_image"]["name"])))
+          {
+              $name = $_FILES["ecom_image"]["name"];
+              $type = $_FILES["ecom_image"]["type"];
+              $size = $_FILES["ecom_image"]["size"];
+              $error = $_FILES["ecom_image"]["error"];
+              $tmp_name = $_FILES["ecom_image"]["tmp_name"];
+              $arr = getimagesize($_FILES["ecom_image"]["tmp_name"]);
+  
+              $image_width = $arr[0];
+              $image_height = $arr[1];
+              $ecom_image_link = $this->processImage($name, $type, $size, $tmp_name, $error, $image_width, $image_height);
+              if($ecom_image_link == 'ext_err')
+              {
+                  return $ecom_image_link;
+              }elseif($ecom_image_link == 'file_err')
+              {
+                  return $ecom_image_link;
+              }elseif($ecom_image_link == 'dimension_err')
+              {
+                  return $ecom_image_link;
+              }
+              // return $slide1_link;
+          }
+  
+  
+          //   $slider1_image = empty(basename($_FILES["slide-2"]["name"]) ? NULL
+            $ecom_title = filter_var($data['ecom_title'], FILTER_SANITIZE_STRING);
+            $ecom_desc = $data['ecom_desc'];
+            $ecom_btn = filter_var($data['ecom_btn'], FILTER_SANITIZE_STRING);
+            
+            if(isset($ecom_image_link))
+            {
+              $myQuery = "UPDATE home SET 
+              ecom_image = '$ecom_image_link'
+              WHERE id = 1";
+    
+              
+              $result = mysqli_query($this->db, $myQuery);
+              if(!$result){
+              return "Error: " .mysqli_error($this->db);
+              }
+            }
+            
+            $myQuery = "UPDATE home SET 
+            ecom_title = '$ecom_title',
+            ecom_desc = '$ecom_desc',
+            ecom_btn = '$ecom_btn'
+            WHERE id = 1";
+  
+            
+            $result = mysqli_query($this->db, $myQuery);
+            if(!$result){
+            return "Error: " .mysqli_error($this->db);
+            }else{
+            return 'good';
+            }
+
+
+            
+        }elseif(!empty($data['submit']) && $data['submit'] == 'signup_upload')
+        {
+  
+  
+          //   $slider1_image = empty(basename($_FILES["slide-2"]["name"]) ? NULL
+            $signup_title = filter_var($data['signup_title'], FILTER_SANITIZE_STRING);
+            $signup_desc = $data['signup_desc'];
+            
+            $myQuery = "UPDATE home SET 
+            signup_title = '$signup_title',
+            signup_desc = '$signup_desc'
+            WHERE id = 1";
+  
+            
+            $result = mysqli_query($this->db, $myQuery);
+            if(!$result){
+            return "Error: " .mysqli_error($this->db);
+            }else{
+            return 'good';
+            }
+
+
+            
+        }
+
+
+
+     }
     }
 
-  }
+  
 
 
 
