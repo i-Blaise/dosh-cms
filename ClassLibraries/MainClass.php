@@ -134,7 +134,8 @@ class mainClass extends DataBase{
         $flieLoc = '../images/uploads/'. $datetime . $imageName;
         $allowedExts = array("png", "PNG", "SVG", "svg,", "JPG", "jpg", "JPEG", "jpeg", "webp");
         $extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-        $imageLink = 'http://localhost/dosh-cms/'.$target_file;
+        // $imageLink = 'http://localhost/dosh-cms/'.$target_file;
+        $imageLink = 'http://dosh.interactivedigital.com.gh/admin/'.$target_file;
         
         // if ((($type == "image/svg")
         // || ($type == "image/jpeg") ||($type == "image/png"))

@@ -11,7 +11,7 @@ $mainPlug = new mainClass();
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/icons/dosh-favicon.png"/>
+	<link rel="icon" type="image/png" href="images/icons/dosh-favicon.PNG"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
@@ -101,7 +101,7 @@ if(isset($_POST['submitLogin']))
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<div class="login100-form-title" style="background-image: url(images/banner-01--old.JPG); 
+				<div class="login100-form-title" style="background-image: url(images/banner-01--old.jpg); 
 				object-fit: cover !important; ">
 					<!-- <span class="login100-form-title-1">
 						Sign In
