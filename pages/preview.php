@@ -83,7 +83,7 @@
                 <div class="card-body">
                   <h4 class="card-title">Dosh Website Preview</h4>
 
-        <iframe src="https://dosh-969a33.webflow.io/" title="description" height="600" width="1150"></iframe>   
+        <iframe src="http://dosh.interactivedigital.com.gh/index.php" title="description" height="600" width="1150"></iframe>   
 
 </div>
 </div>

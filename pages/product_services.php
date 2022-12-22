@@ -78,7 +78,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
       selector: 'textarea#excerpt-editor',
       plugins: 'advlist autolink lists link image charmap preview anchor pagebreak code visualchars wordcount',
 	  setup: function(editor) {
-	  	var max = 400;
+	  	var max = 1000;
 	    editor.on('submit', function(event) {
 		  var numChars = tinymce.activeEditor.plugins.wordcount.body.getCharacterCount();
 		  if (numChars > max) {
@@ -90,7 +90,6 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
 	  }
    });
   </script>
-
 
 
 
@@ -144,130 +143,19 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
         toastr.error('Dimensions can be between 800x500 and 1920x1080', 'Invalid File');
     });
     </script>";
-    }
-  
-    // $footer_link_details_submit_status = $uploadStatus == 'good' ? true : false;
-  
-    
-  
-  }elseif(isset($_POST['banner_submit']))
-  {
-    $uploadStatus = $mainPlug->uploadPnSPage($_POST);
-    // print_r($uploadStatus);
-    // die();
-    if($uploadStatus == 'good')
-    { 
+    }else{ 
         echo "     <script type='text/javascript'>   
         $(document).ready(function() {
         toastr.options.positionClass = 'toast-top-center';
         toastr.options.closeButton = true;
         toastr.options.progressBar = true;
         toastr.options.timeOut = 30000;
-        toastr.success('Products & Services Updated', 'Success');
-    });
-    </script>";
-    }elseif($uploadStatus == 'ext_err')
-    { 
-        echo "     <script type='text/javascript'>   
-        $(document).ready(function() {
-        toastr.options.positionClass = 'toast-top-center';
-        toastr.options.closeButton = true;
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 30000;
-        toastr.success('Products & Services Updated', 'Success');
-    });
-    </script>";
-    }elseif($uploadStatus == 'size_err')
-    { 
-        echo "     <script type='text/javascript'>   
-        $(document).ready(function() {
-        toastr.options.positionClass = 'toast-top-center';
-        toastr.options.closeButton = true;
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 30000;
-        toastr.error('All files must be less than 1MB', 'Invalid File');
-    });
-    </script>";
-    }elseif($uploadStatus == 'dimension_err')
-    { 
-        echo "     <script type='text/javascript'>   
-        $(document).ready(function() {
-        toastr.options.positionClass = 'toast-top-center';
-        toastr.options.closeButton = true;
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 30000;
-        toastr.error('Dimensions can be between 800x500 and 1920x1080', 'Invalid File');
-    });
-    </script>";
-    }
-  }elseif(isset($_POST['pns_submit']))
-  {
-    $uploadStatus = $mainPlug->uploadPnSPage($_POST);
-    // print_r($uploadStatus);
-    // die();
-    if($uploadStatus == 'good')
-    { 
-        echo "     <script type='text/javascript'>   
-        $(document).ready(function() {
-        toastr.options.positionClass = 'toast-top-center';
-        toastr.options.closeButton = true;
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 30000;
-        toastr.success('Products & Services Updated', 'Success');
-    });
-    </script>";
-    }elseif($uploadStatus == 'ext_err')
-    { 
-        echo "     <script type='text/javascript'>   
-        $(document).ready(function() {
-        toastr.options.positionClass = 'toast-top-center';
-        toastr.options.closeButton = true;
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 30000;
-        toastr.success('Products & Services Updated', 'Success');
-    });
-    </script>";
-    }elseif($uploadStatus == 'size_err')
-    { 
-        echo "     <script type='text/javascript'>   
-        $(document).ready(function() {
-        toastr.options.positionClass = 'toast-top-center';
-        toastr.options.closeButton = true;
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 30000;
-        toastr.error('All files must be less than 1MB', 'Invalid File');
-    });
-    </script>";
-    }elseif($uploadStatus == 'dimension_err')
-    { 
-        echo "     <script type='text/javascript'>   
-        $(document).ready(function() {
-        toastr.options.positionClass = 'toast-top-center';
-        toastr.options.closeButton = true;
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 30000;
-        toastr.error('Dimensions can be between 800x500 and 1920x1080', 'Invalid File');
-    });
-    </script>";
-    }
-  }elseif(isset($_POST['pns_submit2']))
-  {
-    $uploadStatus = $mainPlug->uploadPnSPage($_POST);
-    // print_r($uploadStatus);
-    // die();
-    if($uploadStatus == 'good')
-    { 
-        echo "     <script type='text/javascript'>   
-        $(document).ready(function() {
-        toastr.options.positionClass = 'toast-top-center';
-        toastr.options.closeButton = true;
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 30000;
-        toastr.success('Products & Services Page Updated', 'Success');
+        toastr.error('Please contact tech team', 'Something went wrong');
     });
     </script>";
     }
   }
+  
 
 ?>
 </head>
@@ -367,9 +255,9 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Products and Services</h4>
+                  <h4 class="card-title">Products and Services Banner Image</h4>
                   <p class="card-description">
-                  Products and Services Banner Image
+                  <!-- Products and Services Banner Image -->
                   </p>
 
                   <div class="row">
@@ -408,9 +296,9 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Products and Services</h4>
+                  <h4 class="card-title">Dosh Insurance</h4>
                   <p class="card-description">
-                    Insurance
+                    <!-- Insurance -->
                   </p>
 
                   <div class="row">
@@ -446,7 +334,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
                       <textarea class="form-control" id="default-editor" rows="4" name="insurance_desc" required><?php echo $pns_data['insurance_desc']; ?></textarea>
                       <p style="color:red">Max number of characters: 2000</p>
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="insuance_upload" >Submit</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="insurance_upload" >Submit</button>
                     <button typle="reset" class="btn btn-light">Cancel</button>
                   </form>
                 </div>
@@ -459,9 +347,9 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Products and Services</h4>
+                  <h4 class="card-title">Dosh Finance</h4>
                   <p class="card-description">
-                    Financial
+                    <!-- Financial -->
                   </p>
 
                   <div class="row">
@@ -510,7 +398,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Products and Services</h4>
+                  <h4 class="card-title">Dosh Ride</h4>
                   <p class="card-description">
                     Ride
                   </p>
@@ -553,6 +441,55 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
             </div>
 
 
+            <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Dosh Pay</h4>
+                  <p class="card-description">
+                    <!-- Pay -->
+                  </p>
+
+                  <div class="row">
+                  <div class="responsive">
+                    <div class="gallery">
+                      <a target="_blank" href="<?php echo $pns_data['pay_image']; ?>">
+                        <img src="<?php echo $pns_data['pay_image']; ?>" alt="Cinque Terre" width="600" height="400">
+                      </a>
+                      <div class="desc">Pay Image</div>
+                    </div>
+                    <!-- <form method="POST" action="" enctype="multipart/form-data">
+                      <input class="form-control" type="hidden" id="formFile" name="pay_image">
+                    <button type="submit" class="btn btn-danger" style="margin: 10px 0 57px 70%;" name="submit" value="delete">Delete Image</button></form> -->
+                  </div>
+                </div>
+                  <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
+                    <div class="form-group">
+                      <div class="mb-3">
+                      <label for="formFile" class="form-label">Upload Insurance Image</label>
+                      <input class="form-control" type="file" id="formFile" name="pay_image">
+                      </div>
+                      <p style="color:red">Image should be above 800 x 500  and below 1920 x 1080</p>
+                      <p style="color:red">Image size must be less than 1MB</p>
+                      <p style="color:red">Image extesion can be SVG, PNG, JPG or JPEG</p>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Insurance Excerpt</label>
+                      <textarea class="form-control" id="excerpt-editor" rows="4" name="pay_ex" required><?php echo $pns_data['pay_ex']; ?></textarea>
+                      <p style="color:red">Max number of characters: 400</p>
+                    </div>
+                    <div class="form-group">
+                      <label for="default-editor">Insurance Description</label>
+                      <textarea class="form-control" id="default-editor" rows="4" name="pay_desc" required><?php echo $pns_data['pay_desc']; ?></textarea>
+                      <p style="color:red">Max number of characters: 2000</p>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2" name="submit" value="pay_upload" >Submit</button>
+                    <button typle="reset" class="btn btn-light">Cancel</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+
 
 
 
@@ -561,7 +498,7 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Products and Services</h4>
+                  <h4 class="card-title">Dosh E-Commerce</h4>
                   <p class="card-description">
                     E-Commerce
                   </p>
@@ -613,9 +550,9 @@ if(!isset($_SESSION['login']) || empty($_SESSION['login']))
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Products and Services</h4>
+                  <h4 class="card-title">Dosh ERP</h4>
                   <p class="card-description">
-                    ERP
+                    <!-- ERP -->
                   </p>
 
                   <div class="row">
